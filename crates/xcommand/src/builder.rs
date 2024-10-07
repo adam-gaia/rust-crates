@@ -68,7 +68,7 @@ impl XCommandBuilder {
     }
 
     /// Do not inherit the parent process' env vars
-    pub fn clean_environemnt<P: AsRef<Path>>(command: P) -> Self {
+    pub fn clean_environment<P: AsRef<Path>>(command: P) -> Self {
         let path = command.as_ref();
         XCommandBuilder {
             command: path_to_cstring(path),
