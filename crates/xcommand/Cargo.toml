@@ -1,7 +1,12 @@
 [package]
 name = "xcommand"
 version = "0.1.0"
+authors = ["Adam Gaia <git@agaia.dev>"]
 edition = "2021"
+homepage = "https://github.com/adam-gaia/rust-crates/tree/main/crates/xcommand"
+repository = "https://github.com/adam-gaia/rust-crates/tree/main/crates/xcommand"
+license = "MIT OR Apache-2.0"
+
 
 [dependencies]
 log = "0.4.22"
