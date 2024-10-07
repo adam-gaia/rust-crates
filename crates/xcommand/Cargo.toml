@@ -1,5 +1,6 @@
 [package]
 name = "xcommand"
+description = "Run a command, forcing pty allocation, and stream the output"
 version = "0.1.0"
 authors = ["Adam Gaia <git@agaia.dev>"]
 edition = "2021"
