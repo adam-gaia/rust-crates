@@ -1,12 +1,8 @@
 use eyre::bail;
 use eyre::Result;
-use futures_util::pin_mut;
-use futures_util::StreamExt;
-use log::debug;
 use std::path::PathBuf;
-use which::which;
 use xcommand::StdioType;
-use xcommand::XChildHandle;
+use xcommand::StreamExt;
 use xcommand::XCommand;
 use xcommand::XStatus;
 

@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+use std::log
+
+
+DRY_RUN=false
+
+REPO="${PRJ_ROOT}";
+
+FILES_TO_REMOVE=("LICENSE" ".gitignore" "Cargo.lock" ".git" ".github" "flake.lock" "target" "result" ".envrc" ".devenv" ".direnv" ".pre-commit-config.yaml" "public")
+FILES_TO_WARN=("flake.nix")
+
+
+function remove() {
+  local file="$1"
+  if [[ -f "${file}" ]]; then
+    log::warn "Removing ${file}"
+    if [[ "${DRY_RUN}" == "true" ]]; then      
+      echo "[dryrun] Removing ${file}"
+    else
+      trash "${file}"
+    fi
+  fi
+}
+
+function warn_on_file() {
+  local file="$1"
+  if [[ -f "${file}" ]]; then
+    log::warn "Review and delete ${file}"
+  fi
+}
+
+function validate() {
+  local manifest="$1"
+  local project_dir
+  local dir_project_name
+  local toml_project_name
+
+  log::info "Validating ${manifest}"
+
+  project_dir="$(dirname "${manifest}")"
+  dir_project_name="$(basename "${project_dir}")"
+  toml_project_name="$(toml-path --raw-output .package.name "${manifest}")"
+
+  if [[ "${toml_project_name}" != "${dir_project_name}" ]]; then
+    log::error "Cargo.toml project.name '${toml_project_name}' != directory name for '${dir_project_name}'"
+  fi
+}
+
+while [[ $# -gt 0 ]]; do
+    arg="$1"
+    case "${arg}" in
+        -d|--dry-run)
+            DRY_RUN=true
+            ;;
+        *)
+            echo "Unknown option: ${arg}"
+            exit 2
+            ;;
+    esac
+    shift
+done
+
+
+for crate in "${REPO}/crates/"*; do
+  # Remove files that don't belong in the mono-crate
+  for file in "${FILES_TO_REMOVE[@]}"; do
+    remove "${crate}/${file}"
+  done
+
+  # Warn about files that may require manual attention before removal
+  for file in "${FILES_TO_WARN[@]}"; do
+    warn_on_file "${crate}/${file}"
+  done
+  
+  # Standardize licenses
+  cp "${REPO}/LICENSE-APACHE" "${crate}/"
+  cp "${REPO}/LICENSE-MIT" "${crate}/"
+
+  # Validate Cargo.tomls
+  validate "${crate}/Cargo.toml"
+
+done

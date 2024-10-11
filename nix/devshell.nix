@@ -1,4 +1,5 @@
 {
+  flake,
   inputs,
   pkgs,
   perSystem,
@@ -35,6 +36,8 @@ in
             bacon
             oranda
             perSystem.cargo-nextest-xdg.default
+            perSystem.toml-path.default
+            flake.packages.${pkgs.system}.sync
           ]
           # Include the extra packages we use to build our crate
           ++ commonArgs.buildInputs

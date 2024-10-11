@@ -32,10 +32,20 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    toml-path = {
+      url = "github:/adam-gaia/toml-path";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Shim to allow user-level config until https://github.com/nextest-rs/nextest/issues/1419 is done
     # TODO: can we get crane's builtin nextest thing to use this?
     cargo-nextest-xdg = {
       url = "github:adam-gaia/cargo-nextest-xdg";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nonstdlib = {
+      url = "github:adam-gaia/nonstdlib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

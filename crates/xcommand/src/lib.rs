@@ -16,24 +16,8 @@ use nix::unistd::setsid;
 use nix::unistd::ForkResult;
 use nix::unistd::{close, fork, Pid};
 use std::convert::From;
-use std::env;
-use std::ffi::CString;
-use std::fs::File;
-use std::mem;
-use std::os::fd::AsRawFd;
-use std::os::fd::OwnedFd;
-use std::os::unix::ffi::OsStrExt;
-use std::os::unix::io::FromRawFd;
-use std::os::unix::prelude::RawFd;
-use std::path::Path;
-use std::pin::Pin;
-use tokio::io::AsyncBufReadExt;
-use tokio::io::BufReader;
-use tokio::sync::oneshot;
-use tokio_fd::AsyncFd;
-use tokio_stream::wrappers::LinesStream;
-use tokio_stream::{Stream, StreamExt, StreamMap};
-use which::which;
+
+pub use tokio_stream::StreamExt;
 
 #[derive(Debug, Eq, PartialEq, Hash, Copy, Clone)]
 pub enum StdioType {

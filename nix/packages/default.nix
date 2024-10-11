@@ -68,12 +68,22 @@
         partitionType = "count";
       });
   };
+
+  foo =
+    pkgs.writeScriptBin "foo"
+    ''
+      #!/usr/bin/env bash
+      echo foo
+    '';
 in
-  my-crate
-  // {
-    passthru =
-      my-crate.passthru
-      // {
-        tests = checks;
-      };
-  }
+  foo
+# TODO: enable this
+#my-crate
+#// {
+#  passthru =
+#    my-crate.passthru
+#    // {
+#      tests = checks;
+#    };
+#}
+

@@ -408,6 +408,20 @@ checksum = "d3fd119d74b830634cea2a0f58bbd0d54540518a14397557951e79340abc28c0"
 
 [[package]]
 name = "commandstream"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d9953b919621fcd6451b967533707b253b724620bceb47e5eb399aa4c2a847a8"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "futures-util",
+ "log",
+ "tokio-stream",
+ "ttycommand 0.1.0",
+]
+
+[[package]]
+name = "commandstream"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "711697ed22bc22fe398d81ffefc424aaf6782507e91d7695d723b8fc3920ab0f"
@@ -569,6 +583,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "directories-next"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "339ee130d97a610ea5a5872d2bbb130fdf68884ff09d3028b81bec8a1ac23bbc"
+dependencies = [
+ "cfg-if",
+ "dirs-sys-next",
+]
+
+[[package]]
 name = "dirs"
 version = "4.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -601,6 +625,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "dirs-sys-next"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ebda144c4fe02d1f7ea1a7d9641b6fc6b580adcfa024ae48797ecdeb6825b4d"
+dependencies = [
+ "libc",
+ "redox_users",
+ "winapi",
+]
+
+[[package]]
 name = "dunce"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -629,6 +664,19 @@ checksum = "4f2c92ceda6ceec50f43169f9ee8424fe2db276791afde7b2cd8bc084cb376ab"
 dependencies = [
  "log",
  "regex",
+]
+
+[[package]]
+name = "env_logger"
+version = "0.9.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a12e6657c4c97ebab115a42dcee77225f7f482cdd841cf7088c657a42e9e00e7"
+dependencies = [
+ "atty",
+ "humantime",
+ "log",
+ "regex",
+ "termcolor",
 ]
 
 [[package]]
@@ -2252,6 +2300,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "ind"
+version = "0.2.2"
+dependencies = [
+ "anyhow",
+ "async-stream",
+ "clap 4.5.18",
+ "commandstream 0.1.0",
+ "directories-next",
+ "env_logger 0.9.3",
+ "log",
+ "serde",
+ "tokio",
+ "toml 0.5.11",
+]
+
+[[package]]
 name = "indenter"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3107,7 +3171,6 @@ version = "0.1.2"
 dependencies = [
  "clap 4.5.18",
  "color-eyre",
- "commandstream 0.2.0",
  "directories 5.0.1",
  "env_logger 0.11.5",
  "jiff",
@@ -3115,6 +3178,8 @@ dependencies = [
  "names",
  "nixgen",
  "tokio",
+ "which 6.0.3",
+ "xcommand",
 ]
 
 [[package]]
