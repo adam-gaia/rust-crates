@@ -9,5 +9,7 @@
     yamlfmt.enable = true; # yaml
     taplo.enable = true; # toml
     typos.enable = true; # spellcheck
+    shellcheck.enable = true; # lint shell scripts
+    shfmt.enable = true; # format shell scripts
   };
 }

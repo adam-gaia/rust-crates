@@ -1,3 +1,3 @@
 # Sysdo
-Utility for working with my NixOS system
 
+Utility for working with my NixOS system

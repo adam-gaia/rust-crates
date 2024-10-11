@@ -2,12 +2,11 @@
 set -Eeuo pipefail
 use std::log
 
-
 DRY_RUN=false
 
 REPO="${PRJ_ROOT}";
 
-FILES_TO_REMOVE=("LICENSE" ".gitignore" "Cargo.lock" ".git" ".github" "flake.lock" "target" "result" ".envrc" ".devenv" ".direnv" ".pre-commit-config.yaml" "public")
+FILES_TO_REMOVE=("LICENSE" ".gitignore" "Cargo.lock" ".git" ".github" "flake.lock" "target" "result" ".envrc" ".devenv" ".direnv" ".pre-commit-config.yaml" "public" "nix")
 FILES_TO_WARN=("flake.nix")
 
 
@@ -43,7 +42,7 @@ function validate() {
   toml_project_name="$(toml-path --raw-output .package.name "${manifest}")"
 
   if [[ "${toml_project_name}" != "${dir_project_name}" ]]; then
-    log::error "Cargo.toml project.name '${toml_project_name}' != directory name for '${dir_project_name}'"
+    log::error "Cargo.toml project.name '${toml_project_name}' != directory name '${dir_project_name}'"
   fi
 }
 
