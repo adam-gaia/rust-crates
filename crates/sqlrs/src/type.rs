@@ -3,7 +3,7 @@ use jiff::Zoned;
 use log::debug;
 use ordered_float::OrderedFloat;
 use std::collections::HashMap;
-use std::fmt;
+use std::fmt::{self, Display};
 use std::path::PathBuf;
 use winnow::ascii::{alpha1, dec_int, dec_uint, digit1, float, multispace0};
 use winnow::binary::length_take;
@@ -32,6 +32,19 @@ pub enum UnsignedIntegerType {
     USize,
 }
 
+impl Display for UnsignedIntegerType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            UnsignedIntegerType::U8 => "u8",
+            UnsignedIntegerType::U16 => "u16",
+            UnsignedIntegerType::U32 => "u32",
+            UnsignedIntegerType::U64 => "u64",
+            UnsignedIntegerType::USize => "usize",
+        };
+        write!(f, "{}", repr)
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub enum SignedIntegerType {
     I8,
@@ -41,6 +54,19 @@ pub enum SignedIntegerType {
     ISize,
 }
 
+impl Display for SignedIntegerType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            SignedIntegerType::I8 => "i8",
+            SignedIntegerType::I16 => "i16",
+            SignedIntegerType::I32 => "i32",
+            SignedIntegerType::I64 => "i64",
+            SignedIntegerType::ISize => "isize",
+        };
+        write!(f, "{}", repr)
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Copy, Clone)]
 pub enum IntegerType {
     Auto,
@@ -48,11 +74,33 @@ pub enum IntegerType {
     Signed(SignedIntegerType),
 }
 
+impl Display for IntegerType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            IntegerType::Auto => "Integer",
+            IntegerType::Unsigned(i) => &i.to_string(),
+            IntegerType::Signed(i) => &i.to_string(),
+        };
+        write!(f, "{}", repr)
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Copy, Clone)]
 pub enum FloatType {
     Auto,
     F32,
     F64,
+}
+
+impl Display for FloatType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            FloatType::Auto => "Float",
+            FloatType::F32 => "F32",
+            FloatType::F64 => "F64",
+        };
+        write!(f, "{}", repr)
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Copy, Clone)]
@@ -66,6 +114,23 @@ pub enum DataType {
     Blob,
     Enum,
     Path,
+}
+
+impl Display for DataType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            DataType::Null => "NULL",
+            DataType::Integer(i) => &i.to_string(),
+            DataType::Float(f) => &f.to_string(),
+            DataType::String => "String",
+            DataType::Bool => "Bool",
+            DataType::Datetime => "Datetime",
+            DataType::Blob => "Blob",
+            DataType::Enum => "Enum",
+            DataType::Path => "Path",
+        };
+        write!(f, "{}", repr)
+    }
 }
 
 fn integer_type<'a>(s: &mut Stream<'a>) -> PResult<IntegerType> {

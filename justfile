@@ -28,3 +28,6 @@ docs:
 
 cov:
     nix build .#packages.x86_64-linux.llm-coverage
+
+sync:
+    nix run .#packages.x86_64-linux.sync

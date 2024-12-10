@@ -74,7 +74,7 @@ use indexmap::IndexMap;
 #[derive(Debug)]
 pub struct State {
     /// Map table name to a map of column name to column type
-    table_column_types: HashMap<TableName, IndexMap<ColumnName, DataType>>,
+    table_column_types: HashMap<TableName, IndexMap<ColumnName, DataType>>, // TODO: consider making this HashMap<TableName, Schema>
 
     /// Used to keep track of what column (to get its type) we are working with while inserting
     insert_helper: Option<InsertColumnTracker>, // TODO: this should be a stack for nested statements
@@ -331,7 +331,7 @@ fn column_decleration<'a>(s: &mut Stream<'a>) -> PResult<ColumnDecleration> {
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Schema {
-    columns: Vec<ColumnDecleration>,
+    columns: Vec<ColumnDecleration>, // TODO: consider making this an IndexMap
 }
 
 fn schema<'a>(s: &mut Stream<'a>) -> PResult<Schema> {

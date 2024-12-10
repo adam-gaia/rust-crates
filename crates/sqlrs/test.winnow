@@ -1,0 +1,23 @@
+# TODO: look into ANTLR (ANother Tool for Language Recognition), sorta like bison but looks nicer
+
+# functions: match() opt()
+
+ident: [:alpha:][:alphanum:, "_"]*; 
+comma_ident: "," ident
+ident_list: ident(comma_ident)*
+
+keyword: ["SELECT", "UPDATE", "DELETE", "INSERT"];
+
+
+columns: ['*', ident_list];
+
+condition: WHERE TODO
+
+
+
+statement: match(keyword):
+    | keyword::SELECT => columns:columns  FROM table_name:ident opt(condition)
+	| keyword::UPDATE => table:ident SET columns:columns
+	| keyword::DELETE =>
+	| keyword::INSERT =>
+	;

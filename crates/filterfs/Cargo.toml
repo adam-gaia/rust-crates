@@ -1,0 +1,19 @@
+[package]
+name = "filterfs"
+description = "filterfs is a filesystem overlay that allows hiding files with glob patterns"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.5.22", features = ["derive"] }
+env_logger = "0.11.5"
+fuser = "0.15.1"
+libc = "0.2.167"
+log = "0.4.22"
+time = "0.3.37"
+ignore-more = { path = "../ignore-more" }
+directories = "5.0.1"
+tempfile = "3.14.0"
+thiserror = "2.0.4"
+color-eyre = "0.6.3"
+nix = { version = "0.29.0", features = ["fs"] }

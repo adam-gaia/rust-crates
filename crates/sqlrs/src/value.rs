@@ -3,6 +3,7 @@ use jiff::Zoned;
 use log::debug;
 use std::collections::HashMap;
 use std::fmt;
+use std::fmt::Display;
 use std::path::PathBuf;
 use winnow::ascii::{alpha1, dec_int, dec_uint, digit1, float, multispace0};
 use winnow::binary::length_take;
@@ -26,6 +27,27 @@ pub enum FloatValue {
     F64(OrderedFloat<f64>),
 }
 
+impl FloatValue {
+    fn ttype(&self) -> FloatType {
+        match self {
+            FloatValue::Auto(_) => FloatType::Auto,
+            FloatValue::F32(_) => FloatType::F32,
+            FloatValue::F64(_) => FloatType::F64,
+        }
+    }
+}
+
+impl Display for FloatValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            FloatValue::Auto(f) => f.to_string(),
+            FloatValue::F32(f) => f.to_string(),
+            FloatValue::F64(f) => f.to_string(),
+        };
+        write!(f, "{}", repr)
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub enum UnsignedIntegerValue {
     U8(u8),
@@ -33,6 +55,31 @@ pub enum UnsignedIntegerValue {
     U32(u32),
     U64(u64),
     USize(usize),
+}
+
+impl UnsignedIntegerValue {
+    fn ttype(&self) -> UnsignedIntegerType {
+        match self {
+            UnsignedIntegerValue::U8(_) => UnsignedIntegerType::U8,
+            UnsignedIntegerValue::U16(_) => UnsignedIntegerType::U16,
+            UnsignedIntegerValue::U32(_) => UnsignedIntegerType::U32,
+            UnsignedIntegerValue::U64(_) => UnsignedIntegerType::U64,
+            UnsignedIntegerValue::USize(_) => UnsignedIntegerType::USize,
+        }
+    }
+}
+
+impl Display for UnsignedIntegerValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            UnsignedIntegerValue::U8(i) => i.to_string(),
+            UnsignedIntegerValue::U16(i) => i.to_string(),
+            UnsignedIntegerValue::U32(i) => i.to_string(),
+            UnsignedIntegerValue::U64(i) => i.to_string(),
+            UnsignedIntegerValue::USize(i) => i.to_string(),
+        };
+        write!(f, "{}", repr)
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
@@ -44,6 +91,31 @@ pub enum SignedIntegerValue {
     ISize(isize),
 }
 
+impl SignedIntegerValue {
+    fn ttype(&self) -> SignedIntegerType {
+        match self {
+            SignedIntegerValue::I8(_) => SignedIntegerType::I8,
+            SignedIntegerValue::I16(_) => SignedIntegerType::I16,
+            SignedIntegerValue::I32(_) => SignedIntegerType::I32,
+            SignedIntegerValue::I64(_) => SignedIntegerType::I64,
+            SignedIntegerValue::ISize(_) => SignedIntegerType::ISize,
+        }
+    }
+}
+
+impl Display for SignedIntegerValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            SignedIntegerValue::I8(i) => i.to_string(),
+            SignedIntegerValue::I16(i) => i.to_string(),
+            SignedIntegerValue::I32(i) => i.to_string(),
+            SignedIntegerValue::I64(i) => i.to_string(),
+            SignedIntegerValue::ISize(i) => i.to_string(),
+        };
+        write!(f, "{}", repr)
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Copy, Clone)]
 pub enum IntegerValue {
     Auto(i32),
@@ -52,11 +124,23 @@ pub enum IntegerValue {
 }
 
 impl IntegerValue {
-    fn get_type(&self) -> IntegerType {
+    fn ttype(&self) -> IntegerType {
         match self {
             Self::Auto(_) => IntegerType::Auto,
-            _ => todo!(),
+            Self::Unsigned(i) => IntegerType::Unsigned(i.ttype()),
+            Self::Signed(i) => IntegerType::Signed(i.ttype()),
         }
+    }
+}
+
+impl Display for IntegerValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            IntegerValue::Auto(i) => i.to_string(),
+            IntegerValue::Unsigned(i) => i.to_string(),
+            IntegerValue::Signed(i) => i.to_string(),
+        };
+        write!(f, "{}", repr)
     }
 }
 
@@ -76,6 +160,42 @@ pub enum Value {
     Blob(String),
     Enum(String),
     Path(PathBuf),
+}
+
+impl Value {
+    fn ttype(&self) -> DataType {
+        match self {
+            Value::Null => DataType::Null,
+            Value::Integer(i) => DataType::Integer(i.ttype()),
+            Value::Float(f) => DataType::Float(f.ttype()),
+            Value::String(_) => DataType::String,
+            Value::Bool(_) => DataType::Bool,
+            Value::Datetime(_) => DataType::Datetime,
+            Value::Blob(_) => DataType::Blob,
+            Value::Enum(_) => DataType::Enum,
+            Value::Path(_) => DataType::Path,
+        }
+    }
+}
+
+impl Display for Value {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let repr = match self {
+            Value::Null => "NULL",
+            Value::Integer(i) => &i.to_string(),
+            Value::Float(f) => &f.to_string(),
+            Value::String(s) => &s,
+            Value::Bool(b) => match b {
+                true => "true",
+                false => "false",
+            },
+            Value::Datetime(d) => &d.to_string(),
+            Value::Blob(b) => &b,
+            Value::Enum(e) => e,
+            Value::Path(p) => &p.display().to_string(),
+        };
+        write!(f, "{}", repr)
+    }
 }
 
 // TODO: replace all my alt((literal_str, literal_str, ...)) calls with dispatch

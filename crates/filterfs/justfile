@@ -1,0 +1,15 @@
+mountpoint := "/tmp/fuse"
+source_dir := "/home/agaia/repo/personal/notebook"
+
+default:
+    @just --list
+
+build:
+    cargo lbuild
+
+run:
+    mkdir -p {{mountpoint}}
+    RUST_LOG='filterfs=debug' cargo lrun -- {{mountpoint}} {{source_dir}} --exclude="/result" --exclude=".direnv/" --exclude=".devenv/" --exclude=".pre-commit-config.yaml"
+
+test:
+    cargo nextest run
