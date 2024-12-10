@@ -19,4 +19,4 @@ names = "0.14.0"
 nixgen = "0.1.0"
 tokio = { version = "1.39.2", features = ["macros", "process"] }
 xcommand = { path = "../xcommand" }
-which = "6.0.3"
+which = "7.0.0"
