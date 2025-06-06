@@ -9,7 +9,7 @@ bitflags = "2.6.0"
 env_logger = "0.11.5"
 eyre = "0.6.12"
 indexmap = { version = "2.6.0", features = ["serde"] }
-jiff = { version = "0.1.14", features = ["serde"] }
+jiff = { version = "0.2.0", features = ["serde"] }
 log = "0.4.22"
 ordered-float = { version = "4.5.0", features = ["serde"] }
 thiserror = "2.0.3"
