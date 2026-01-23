@@ -20,5 +20,5 @@ env_logger = "0.9.1"
 log = "0.4.17"
 serde = { version = "1.0.147", features = ["serde_derive"] }
 ignore-more = {path = "../ignore-more" }
-gix-status = "0.13.0"
+gix-status = "0.25.0"
 
